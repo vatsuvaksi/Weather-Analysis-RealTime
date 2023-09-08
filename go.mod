@@ -1,7 +1,7 @@
 module real-time-weather-app
 
 go 1.21.0
-
+	
 require github.com/valyala/fasthttp v1.49.0
 
 require (
