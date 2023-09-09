@@ -17,7 +17,8 @@ func NewWeatherClientResource() (*WeatherClientResource, error) {
 	// Creating a new WeatherClientResource
 	fmt.Println("Creating Weather Resource...")
 	client := &fasthttp.Client{
-		MaxConnsPerHost: 10,
+		MaxConnsPerHost:        10,
+		DisablePathNormalizing: false,
 	}
 	return &WeatherClientResource{Client: client, BaseURL: "https://api.weatherapi.com/v1/"}, nil
 }
@@ -31,6 +32,7 @@ func (wCR *WeatherClientResource) GetDataFromClient(url string, queryParams map[
 	// Set the request URL
 	finalQuery := wCR.BaseURL + url + "?" + buildQueryString(queryParams)
 	//TODO : Find a way to encode this URL
+	// Found out that if client's DisablePathNormalization is set to false it will take care of URI encoding
 	req.SetRequestURI(finalQuery)
 
 	// Create a new fasthttp response object
