@@ -3,6 +3,7 @@ package weatherclient
 
 import (
 	"fmt"
+	"sync"
 
 	"github.com/valyala/fasthttp"
 )
@@ -12,15 +13,25 @@ type WeatherClientResource struct {
 	BaseURL string
 }
 
+var singletonWeatherClient *WeatherClientResource
+var once sync.Once
+var baseURL = "https://api.weatherapi.com/v1/"
+
 // NewWeatherClientResource creates a new WeatherClientResource with custom configuration.
 func NewWeatherClientResource() (*WeatherClientResource, error) {
 	// Creating a new WeatherClientResource
-	fmt.Println("Creating Weather Resource...")
-	client := &fasthttp.Client{
-		MaxConnsPerHost:        10,
-		DisablePathNormalizing: false,
-	}
-	return &WeatherClientResource{Client: client, BaseURL: "https://api.weatherapi.com/v1/"}, nil
+
+	once.Do(func() {
+		fmt.Println("Creating Weather Resource only once...")
+		singletonWeatherClient = &WeatherClientResource{
+			Client: &fasthttp.Client{
+				MaxConnsPerHost:        10,
+				DisablePathNormalizing: false,
+			},
+			BaseURL: baseURL,
+		}
+	})
+	return singletonWeatherClient, nil
 }
 
 func (wCR *WeatherClientResource) GetDataFromClient(url string, queryParams map[string]string) ([]byte, error) {
