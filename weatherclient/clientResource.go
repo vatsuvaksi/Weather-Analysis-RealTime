@@ -20,9 +20,8 @@ var baseURL = "https://api.weatherapi.com/v1/"
 // NewWeatherClientResource creates a new WeatherClientResource with custom configuration.
 func NewWeatherClientResource() (*WeatherClientResource, error) {
 	// Creating a new WeatherClientResource
-
 	once.Do(func() {
-		fmt.Println("Creating Weather Resource only once...")
+		fmt.Println("Creating Weather Resource Singleton Object...")
 		singletonWeatherClient = &WeatherClientResource{
 			Client: &fasthttp.Client{
 				MaxConnsPerHost:        10,
@@ -36,6 +35,7 @@ func NewWeatherClientResource() (*WeatherClientResource, error) {
 
 func (wCR *WeatherClientResource) GetDataFromClient(url string, queryParams map[string]string) ([]byte, error) {
 	// Create a new fasthttp request object
+	fmt.Println("GetDataFromClient Initiated for --> ", url)
 	req := fasthttp.AcquireRequest()
 	req.Header.SetMethod("GET")
 	defer fasthttp.ReleaseRequest(req)
@@ -62,6 +62,7 @@ func (wCR *WeatherClientResource) GetDataFromClient(url string, queryParams map[
 
 	// Get the response body as bytes
 	responseBody := resp.Body()
+	fmt.Println("GetDataFromClient Completed and body returned for --> ", url)
 	return responseBody, nil
 }
 

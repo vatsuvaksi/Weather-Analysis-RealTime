@@ -1,5 +1,10 @@
 package apis
 
-func getRealTimeData() {
+import (
+	"fmt"
+	"os"
+)
 
+func GetRealTimeData() {
+	fmt.Println("Get Real Time Data ", os.Getenv("API_KEY"))
 }
