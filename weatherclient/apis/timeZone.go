@@ -7,29 +7,27 @@ import (
 )
 
 /*
-Function Calls the weather API to get real time Data using the paramater q which can either be
-lattitude,longitude value in the format "lat,lang" or it can be a single zip code "zipCode"
+Add description here
 */
-func GetFuture(q, dt string) ([]byte, error) {
+func GetTimeZone(q string) ([]byte, error) {
 	var apiKey = os.Getenv("API_KEY")
-	fmt.Println("Initiated API call for GetFuture")
+	fmt.Println("Initiated API call for GetTimeZone")
 	weatherClientResource, err := weatherclient.GetWeatherClientResource()
 	if err != nil {
 		fmt.Println(err)
 		return nil, err
 	} else {
-		var url = "future.json"
+		var url = "timezone.json"
 		response, err := weatherClientResource.GetDataFromClient(url, map[string]string{
 			"q":   q,
 			"key": apiKey,
-			"dt":  dt,
 		})
 
 		if err != nil {
 			fmt.Println(err)
 			return nil, err
 		} else {
-			fmt.Println("GetFuture Data Generated response")
+			fmt.Println("GetTimeZone Data Generated response")
 			return response, nil
 		}
 	}
