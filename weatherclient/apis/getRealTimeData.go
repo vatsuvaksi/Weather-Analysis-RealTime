@@ -4,15 +4,13 @@ import (
 	"fmt"
 	"os"
 	"real-time-weather-app/weatherclient"
-
-	"github.com/valyala/fasthttp"
 )
 
 /*
 Function Calls the weather API to get real time Data using the paramater q which can either be
 lattitude,longitude value in the format "lat,lang" or it can be a single zip code "zipCode"
 */
-func GetRealTimeData(q string) (*fasthttp.Response, error) {
+func GetRealTimeData(q string) ([]byte, error) {
 	var apiKey = os.Getenv("API_KEY")
 	fmt.Println("Initiated API call for GetRealTimeData")
 	weatherClientResource, err := weatherclient.GetWeatherClientResource()

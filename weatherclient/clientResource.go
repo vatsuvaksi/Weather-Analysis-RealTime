@@ -33,7 +33,7 @@ func GetWeatherClientResource() (*WeatherClientResource, error) {
 	return singletonWeatherClient, nil
 }
 
-func (wCR *WeatherClientResource) GetDataFromClient(url string, queryParams map[string]string) (*fasthttp.Response, error) {
+func (wCR *WeatherClientResource) GetDataFromClient(url string, queryParams map[string]string) ([]byte, error) {
 	// Create a new fasthttp request object
 	fmt.Println("GetDataFromClient Initiated for --> ", url)
 	req := fasthttp.AcquireRequest()
@@ -42,6 +42,7 @@ func (wCR *WeatherClientResource) GetDataFromClient(url string, queryParams map[
 
 	// Set the request URL
 	finalQuery := wCR.BaseURL + url + "?" + buildQueryString(queryParams)
+	// fmt.Println("final query: ", finalQuery)
 	//TODO : Find a way to encode this URL
 	// Found out that if client's DisablePathNormalization is set to false it will take care of URI encoding
 	req.SetRequestURI(finalQuery)
@@ -49,6 +50,11 @@ func (wCR *WeatherClientResource) GetDataFromClient(url string, queryParams map[
 	// Create a new fasthttp response object
 	resp := fasthttp.AcquireResponse()
 	defer fasthttp.ReleaseResponse(resp)
+
+	// Making a copy of acquired response as the response will be empty necause defer statements will
+	// release the response to connection pool
+	// var responseCopy *fasthttp.Response
+	// resp.CopyTo(responseCopy)
 
 	// Send the GET request
 	if err := wCR.Client.Do(req, resp); err != nil {
@@ -63,7 +69,8 @@ func (wCR *WeatherClientResource) GetDataFromClient(url string, queryParams map[
 	// Get the response body as bytes
 	// responseBody := resp.Body()
 	fmt.Println("GetDataFromClient Completed and response returned for --> ", finalQuery)
-	return resp, nil
+
+	return resp.Body(), nil
 }
 
 func buildQueryString(params map[string]string) string {
