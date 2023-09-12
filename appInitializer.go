@@ -7,7 +7,7 @@ import (
 	"github.com/joho/godotenv"
 )
 
-func InitializeWeatherApplication() {
+func initializeWeatherApplication() {
 	fmt.Println("InitializeWeatherApplication Started ...")
 
 	// Load environment variables from the .env file
