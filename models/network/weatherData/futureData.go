@@ -30,7 +30,7 @@ type Day struct {
 	TotalPrecipIN float64   `json:"totalprecip_in"`
 	AvgVisKM      float64   `json:"avgvis_km"`
 	AvgVisMiles   float64   `json:"avgvis_miles"`
-	AvgHumidity   int       `json:"avghumidity"`
+	AvgHumidity   float64   `json:"avghumidity"`
 	Condition     Condition `json:"condition"`
 	UV            float64   `json:"uv"`
 }
