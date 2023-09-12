@@ -137,3 +137,7 @@ type RealTimeData struct {
 		GustKph    float64 `json:"gust_kph"`
 	} `json:"current"`
 }
+
+type TimeZoneData struct {
+	Location Location `json:"location"`
+}
