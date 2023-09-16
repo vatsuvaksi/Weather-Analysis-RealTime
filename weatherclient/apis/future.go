@@ -13,14 +13,14 @@ Function Calls the weather API to get real time Data using the paramater q which
 lattitude,longitude value in the format "lat,lang" or it can be a single zip code "zipCode"
 and date in
 */
-func GetFuture(q, dt string) (*weatherdata.ForeCastData, error) {
+func GetFuture(q, dt string) (*weatherdata.FutureData, error) {
 	var apiKey = os.Getenv("API_KEY")
-	fmt.Println("Initiated API call for ForeCastDataData")
-	var ForeCastData *weatherdata.ForeCastData
+	fmt.Println("Initiated API call for FutureDataData")
+	var FutureData *weatherdata.FutureData
 	weatherClientResource, err := weatherclient.GetWeatherClientResource()
 	if err != nil {
 		fmt.Println(err)
-		return ForeCastData, err
+		return FutureData, err
 	} else {
 		var url = "future.json"
 		response, err := weatherClientResource.GetDataFromClient(url, map[string]string{
@@ -34,12 +34,12 @@ func GetFuture(q, dt string) (*weatherdata.ForeCastData, error) {
 			return nil, err
 		} else {
 
-			if err := json.Unmarshal(response, &ForeCastData); err != nil {
+			if err := json.Unmarshal(response, &FutureData); err != nil {
 				// fmt.Println("I am here")
-				return ForeCastData, err
+				return FutureData, err
 			} else {
 				fmt.Println("GetFuture Data Generated response")
-				return ForeCastData, nil
+				return FutureData, nil
 			}
 		}
 	}

@@ -68,7 +68,7 @@ func (wCR *WeatherClientResource) GetDataFromClient(url string, queryParams map[
 
 	// Get the response body as bytes
 	// responseBody := resp.Body()
-	fmt.Println("GetDataFromClient Completed and response returned for --> ", finalQuery)
+	fmt.Println("GetDataFromClient Completed and response returned for --> ")
 
 	return resp.Body(), nil
 }
