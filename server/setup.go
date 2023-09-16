@@ -6,10 +6,11 @@ import (
 	"github.com/valyala/fasthttp"
 )
 
-func Start() {
+func Start(port string) {
 	router, err := setRoutes()
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Fatal(fasthttp.ListenAndServe(":8080", router.Handler))
+
+	log.Fatal(fasthttp.ListenAndServe(":"+port, router.Handler))
 }
