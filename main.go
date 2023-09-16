@@ -1,5 +1,8 @@
 package main
 
+import appIntialization "real-time-weather-app/appInitialization"
+
 func main() {
-	initializeWeatherApplication()
+	appIntialization.InitializeWeatherApplication()
+
 }
