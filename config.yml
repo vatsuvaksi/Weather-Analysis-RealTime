@@ -1,2 +1,11 @@
 serverConfig:
   port: 7070
+  Network : "127.0.0.1:"
+  Address : 7070
+  ReadBufferSize : 4096
+  MaxConnsPerIP : 10
+  MaxRequestsPerConn : 100 
+  MaxRequestBodySize : 102400
+  Concurrency : 50
+  Name : fasthttp-server
+
