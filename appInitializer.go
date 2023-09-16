@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"real-time-weather-app/server"
 	"real-time-weather-app/weatherclient"
 
 	"github.com/joho/godotenv"
@@ -15,6 +16,7 @@ func initializeWeatherApplication() {
 	// Initialize WeatherClient
 	loadWeatherClientResource()
 
+	initializeServer()
 	fmt.Println("InitializeWeatherApplication Completed ...")
 }
 
@@ -32,4 +34,7 @@ func loadWeatherClientResource() {
 		// Fact that the client got created = No Error Logs
 		fmt.Println(err)
 	}
+}
+func initializeServer() {
+	server.Start()
 }
