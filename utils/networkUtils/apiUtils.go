@@ -2,6 +2,7 @@ package networkutils
 
 import (
 	"encoding/json"
+	"real-time-weather-app/models/network"
 
 	"github.com/valyala/fasthttp"
 )
@@ -12,6 +13,20 @@ func RenderSuccessResponse(ctx *fasthttp.RequestCtx, responseBody interface{}) {
 	// Write the JSON response to the client
 	ctx.Response.SetStatusCode(fasthttp.StatusOK)
 	jsonResponse, err := json.Marshal(&responseBody)
+	if err != nil {
+		ctx.Error(err.Error(), fasthttp.StatusInternalServerError)
+	}
+	ctx.Response.SetBody(jsonResponse)
+}
+
+func RenderInternalFailiureResponse(ctx *fasthttp.RequestCtx, err error) {
+	ctx.Response.Header.Set(fasthttp.HeaderContentType, "application/json; charset=utf-8")
+	ctx.SetStatusCode(fasthttp.StatusInternalServerError)
+	errorStruct := &network.FailiureResponse{
+		ErrorMessage: err.Error(),
+		Status:       "Internal Server Error",
+	}
+	jsonResponse, err := json.Marshal(errorStruct)
 	if err != nil {
 		ctx.Error(err.Error(), fasthttp.StatusInternalServerError)
 	}
