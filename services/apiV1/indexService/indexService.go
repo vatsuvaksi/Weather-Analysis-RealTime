@@ -1,6 +1,9 @@
 package indexservice
 
-import "math/rand"
+import (
+	"math/rand"
+	"real-time-weather-app/models/network"
+)
 
 type IndexService struct {
 	welcomeQoutes []string
@@ -29,4 +32,10 @@ func NewIndexService() *IndexService {
 
 func (is *IndexService) RandomWelcomeMessage() string {
 	return is.welcomeQoutes[rand.Intn(len(is.welcomeQoutes))]
+}
+func (is *IndexService) ResponseWelcomeMessage() *network.ResponseQoutes {
+	return &network.ResponseQoutes{
+		WelcomeMessage: "Welcome to the Server. Here is a qoute from Johny Bravo, the LEGEND",
+		WordsOfWisdom:  is.RandomWelcomeMessage(),
+	}
 }
