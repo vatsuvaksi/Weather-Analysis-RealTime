@@ -17,3 +17,16 @@ func RenderSuccessResponse(ctx *fasthttp.RequestCtx, responseBody interface{}) {
 	}
 	ctx.Response.SetBody(jsonResponse)
 }
+
+func FetchQueryParams(ctx *fasthttp.RequestCtx) (map[string]string, error) {
+	queryParams := make(map[string]string)
+	// Get all the key-value pairs from the request param
+	queryArgs := ctx.QueryArgs()
+	queryArgs.VisitAll(func(key, value []byte) {
+		queryParams[string(key)] = string(value)
+	})
+	return queryParams, nil
+}
+func fillQueryParams(k, v []byte) ([]byte, []byte) {
+	return nil, nil
+}
