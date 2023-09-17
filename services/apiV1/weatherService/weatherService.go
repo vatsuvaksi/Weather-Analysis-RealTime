@@ -37,7 +37,7 @@ func (ws *WeatherService) GetFuture(q, dt string) (*weatherData.FutureData, erro
 	}
 	return response, nil
 }
-func (ws *WeatherService) GetTimeZone(q, dt string) (*weatherData.TimeZoneData, error) {
+func (ws *WeatherService) GetTimeZone(q string) (*weatherData.TimeZoneData, error) {
 	// Calling Internal Services to GetTimeZone Data
 	response, err := apis.GetTimeZone(q)
 	if err != nil {

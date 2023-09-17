@@ -16,14 +16,9 @@ func MuxRouter() (*router.Router, error) {
 	r := router.New()
 	r.GET("/", indexController.WelcomeHome)
 	r.GET("/realTimeData", weathercontroller.GetRealTime)
-	// r.GET("/forecast", forecast)
-	// r.GET("/future", index)
-	// r.GET("/timeZone", index)
+	r.GET("/forecast", weathercontroller.GetForecast)
+	r.GET("/future", weathercontroller.GetFuture)
+	r.GET("/timeZone", weathercontroller.GetTimeZone)
 
 	return r, nil
 }
-
-// func index(ctx *fasthttp.RequestCtx) {
-// 	fmt.Println("testing")
-// 	ctx.WriteString("Welcome!")
-// }
