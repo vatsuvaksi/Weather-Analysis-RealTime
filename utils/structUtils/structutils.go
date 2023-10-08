@@ -8,21 +8,23 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
-func PrintStructFields(s interface{}) {
-	val := reflect.ValueOf(s)
-	if val.Kind() != reflect.Struct {
-		loggers.Logger.WithField("Key", logrus.Fields{
-			"Input":   s,
-			"isFatal": false,
-		}).Warn("Input is not a struct")
-		return
-	}
+func PrintStructFields(i interface{}) {
+	if reflect.ValueOf(i).Kind() == reflect.Struct {
+		t := reflect.TypeOf(i)
+		v := reflect.ValueOf(i)
+		fmt.Println("\n", t.Name())
+		for j := 0; j < v.NumField(); j++ {
+			switch v.Field(j).Kind() {
+			case reflect.Struct:
+				printWeatherDetails(v.Field(j).Interface())
+			case reflect.String:
+				fmt.Printf("%s : %s\n", t.Field(j).Name, v.Field(j).String())
+			case reflect.Float64:
+				fmt.Printf("%s : %f\n", t.Field(j).Name, v.Field(j).Float())
+			default:
+				fmt.Println("Type not supported..")
+			}
+		}
+ }  
 
-	typ := val.Type()
-	for i := 0; i < val.NumField(); i++ {
-		field := val.Field(i)
-		fieldName := typ.Field(i).Name
-		fieldValue := field.Interface()
-		fmt.Printf("%s: %v\n", fieldName, fieldValue)
-	}
-}
+
