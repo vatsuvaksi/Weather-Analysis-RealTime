@@ -2,10 +2,7 @@ package structutils
 
 import (
 	"fmt"
-	"real-time-weather-app/utils/loggers"
 	"reflect"
-
-	"github.com/sirupsen/logrus"
 )
 
 func PrintStructFields(i interface{}) {
@@ -16,7 +13,7 @@ func PrintStructFields(i interface{}) {
 		for j := 0; j < v.NumField(); j++ {
 			switch v.Field(j).Kind() {
 			case reflect.Struct:
-				printWeatherDetails(v.Field(j).Interface())
+				PrintStructFields(v.Field(j).Interface())
 			case reflect.String:
 				fmt.Printf("%s : %s\n", t.Field(j).Name, v.Field(j).String())
 			case reflect.Float64:
@@ -25,6 +22,5 @@ func PrintStructFields(i interface{}) {
 				fmt.Println("Type not supported..")
 			}
 		}
- }  
-
-
+	}
+}
