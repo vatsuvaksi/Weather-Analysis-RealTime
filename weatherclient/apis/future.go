@@ -2,10 +2,12 @@ package apis
 
 import (
 	"encoding/json"
-	"fmt"
 	"os"
 	weatherdata "real-time-weather-app/models/network/weatherData"
+	"real-time-weather-app/utils/loggers"
 	"real-time-weather-app/weatherclient"
+
+	"github.com/sirupsen/logrus"
 )
 
 /*
@@ -15,11 +17,14 @@ and date in
 */
 func GetFuture(q, dt string) (*weatherdata.FutureData, error) {
 	var apiKey = os.Getenv("API_KEY")
-	fmt.Println("Initiated API call for FutureDataData")
+	loggers.Logger.Info("Initiated API call for FutureDataData")
 	var FutureData *weatherdata.FutureData
 	weatherClientResource, err := weatherclient.GetWeatherClientResource()
 	if err != nil {
-		fmt.Println(err)
+		loggers.Logger.WithField("Key", logrus.Fields{
+			"Status":  500,
+			"isFatal": false,
+		}).Warn("Error Fetching weather client resource for Future API ")
 		return FutureData, err
 	} else {
 		var url = "future.json"
@@ -30,15 +35,22 @@ func GetFuture(q, dt string) (*weatherdata.FutureData, error) {
 		})
 
 		if err != nil {
-			fmt.Println(err)
+			loggers.Logger.WithField("Key", logrus.Fields{
+				"Status":  500,
+				"isFatal": false,
+			}).Warn("Error Fetching Info from Client for Future API ")
 			return nil, err
 		} else {
 
 			if err := json.Unmarshal(response, &FutureData); err != nil {
-				// fmt.Println("I am here")
+				// loggers.Logger.Info("I am here")
+				loggers.Logger.WithField("Key", logrus.Fields{
+					"Status":  500,
+					"isFatal": false,
+				}).Warn("Error Unmarshalling FutureData ")
 				return FutureData, err
 			} else {
-				fmt.Println("GetFuture Data Generated response")
+				loggers.Logger.Info("GetFuture Data Generated response")
 				return FutureData, nil
 			}
 		}

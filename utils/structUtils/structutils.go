@@ -2,13 +2,19 @@ package structutils
 
 import (
 	"fmt"
+	"real-time-weather-app/utils/loggers"
 	"reflect"
+
+	"github.com/sirupsen/logrus"
 )
 
 func PrintStructFields(s interface{}) {
 	val := reflect.ValueOf(s)
 	if val.Kind() != reflect.Struct {
-		fmt.Println("Not a struct")
+		loggers.Logger.WithField("Key", logrus.Fields{
+			"Input":   s,
+			"isFatal": false,
+		}).Warn("Input is not a struct")
 		return
 	}
 

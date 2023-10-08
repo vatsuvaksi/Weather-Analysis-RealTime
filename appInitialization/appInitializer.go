@@ -1,12 +1,13 @@
 package appIntialization
 
 import (
-	"fmt"
 	"log"
 	"real-time-weather-app/server"
+	"real-time-weather-app/utils/loggers"
 	"real-time-weather-app/weatherclient"
 
 	"github.com/joho/godotenv"
+	"github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
 	"github.com/valyala/fasthttp"
 )
@@ -30,7 +31,10 @@ type WebConfig struct {
 var config WebConfig
 
 func InitializeWeatherApplication() {
-	fmt.Println("InitializeWeatherApplication Started ...")
+	loggers.Logger.WithField("Key", logrus.Fields{
+		"isDeveloper":    true,
+		"Initialization": "Started",
+	}).Info("Welcome to the application")
 
 	// Load environment variables from the .env file
 	loadEnvVariables()
@@ -41,22 +45,31 @@ func InitializeWeatherApplication() {
 	loadWeatherClientResource()
 
 	initializeServer()
-	fmt.Println("InitializeWeatherApplication Completed ...")
+	loggers.Logger.WithField("Key", logrus.Fields{
+		"Initialization": "Completed",
+	}).Info("Welcome to the application")
+
 }
 
 func loadEnvVariables() {
 	if err := godotenv.Load(); err != nil {
-		fmt.Println("Error loading .env file")
+		loggers.Logger.WithField("Key", logrus.Fields{
+			"Status":  500,
+			"isFatal": true,
+		}).Fatal("Error Loading environment variables")
 		return
 	} else {
-		fmt.Println("Environment Variables Loaded ...")
+		loggers.Logger.Info("Environment variables Loaded.")
 	}
 }
 func loadWeatherClientResource() {
 	_, err := weatherclient.GetWeatherClientResource()
 	if err != nil {
 		// Fact that the client got created = No Error Logs
-		fmt.Println(err)
+		loggers.Logger.WithField("Key", logrus.Fields{
+			"Status":  500,
+			"isFatal": true,
+		}).Fatal("Error Loading Weather Client Resource")
 	}
 }
 
@@ -67,12 +80,18 @@ func loadAppConfig() {
 
 	// Read the config file
 	if err := viper.ReadInConfig(); err != nil {
-		log.Fatalf("Error reading config file: %v", err)
+		loggers.Logger.WithField("Key", logrus.Fields{
+			"Status":  500,
+			"isFatal": true,
+		}).Fatal("Error reading config file:", err)
 	}
 	if err := viper.Unmarshal(&config); err != nil {
-		log.Fatal("unmarhsalling err", err)
+		loggers.Logger.WithField("Key", logrus.Fields{
+			"Status":  500,
+			"isFatal": true,
+		}).Fatal("Error Unmarshalling Config file:", err)
 	}
-	fmt.Println("Configurations loaded successfully")
+	loggers.Logger.Info("Configurations loaded successfully")
 }
 
 // type webServer struct {
@@ -86,7 +105,10 @@ func loadAppConfig() {
 func initializeServer() {
 	router, err := server.MuxRouter()
 	if err != nil {
-		log.Fatal("Failed to initialize router", err)
+		loggers.Logger.WithField("Key", logrus.Fields{
+			"Status":  500,
+			"isFatal": true,
+		}).Fatal("Failed to initialize router:", err)
 	}
 
 	s := &fasthttp.Server{
@@ -99,6 +121,10 @@ func initializeServer() {
 		Concurrency:        config.ServerConfig.Concurrency,
 	}
 	if err := s.ListenAndServe(":" + config.ServerConfig.Port); err != nil {
+		loggers.Logger.WithField("Key", logrus.Fields{
+			"Status":  500,
+			"isFatal": true,
+		}).Fatal("Failed to Listen and Serve:", err)
 		log.Fatal(err)
 	}
 }
