@@ -5,6 +5,8 @@ import (
 	weathercontroller "real-time-weather-app/controllers/apiV1/weatherController"
 
 	"github.com/fasthttp/router"
+	httpSwagger "github.com/swaggo/http-swagger"
+	"github.com/valyala/fasthttp/fasthttpadaptor"
 )
 
 func MuxRouter() (*router.Router, error) {
@@ -19,6 +21,9 @@ func MuxRouter() (*router.Router, error) {
 	r.GET("/forecast", weathercontroller.GetForecast)
 	r.GET("/future", weathercontroller.GetFuture)
 	r.GET("/timeZone", weathercontroller.GetTimeZone)
+
+	// Serve Swagger UI at the /swagger URL
+	r.GET("/swagger/{*filepath}", fasthttpadaptor.NewFastHTTPHandlerFunc(httpSwagger.WrapHandler))
 
 	return r, nil
 }
