@@ -1,0 +1,688 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "contact": {}
+    },
+    "paths": {
+        "/weather/forecast": {
+            "get": {
+                "description": "Retrieve weather forecast data based on the provided query and number of days.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Weather"
+                ],
+                "summary": "Get weather forecast data",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Location query",
+                        "name": "q",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Number of days for the forecast",
+                        "name": "days",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful response",
+                        "schema": {
+                            "$ref": "#/definitions/weatherData.ForeCastData"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "404": {
+                        "description": "Not found"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
+        "/weather/future": {
+            "get": {
+                "description": "Retrieve future weather data based on the provided query and date.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Weather"
+                ],
+                "summary": "Get future weather data",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Location query",
+                        "name": "q",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Date for the forecast (YYYY-MM-DD format)",
+                        "name": "dt",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful response",
+                        "schema": {
+                            "$ref": "#/definitions/weatherData.FutureData"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "404": {
+                        "description": "Not found"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
+        "/weather/real-time": {
+            "get": {
+                "description": "Retrieve real-time weather data based on the provided query.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Weather"
+                ],
+                "summary": "Get real-time weather data",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Location query",
+                        "name": "q",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful response",
+                        "schema": {
+                            "$ref": "#/definitions/weatherData.RealTimeData"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "404": {
+                        "description": "Not found"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
+        "/weather/time-zone": {
+            "get": {
+                "description": "Retrieve time zone data based on the provided location query.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Weather"
+                ],
+                "summary": "Get time zone data",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Location query",
+                        "name": "q",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful response",
+                        "schema": {
+                            "$ref": "#/definitions/weatherData.TimeZoneData"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "404": {
+                        "description": "Not found"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "weatherData.Astro": {
+            "type": "object",
+            "properties": {
+                "moon_illumination": {
+                    "type": "string"
+                },
+                "moon_phase": {
+                    "type": "string"
+                },
+                "moonrise": {
+                    "type": "string"
+                },
+                "moonset": {
+                    "type": "string"
+                },
+                "sunrise": {
+                    "type": "string"
+                },
+                "sunset": {
+                    "type": "string"
+                }
+            }
+        },
+        "weatherData.Condition": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer"
+                },
+                "icon": {
+                    "type": "string"
+                },
+                "text": {
+                    "type": "string"
+                }
+            }
+        },
+        "weatherData.Current": {
+            "type": "object",
+            "properties": {
+                "cloud": {
+                    "type": "integer"
+                },
+                "condition": {
+                    "type": "object",
+                    "properties": {
+                        "code": {
+                            "type": "integer"
+                        },
+                        "icon": {
+                            "type": "string"
+                        },
+                        "text": {
+                            "type": "string"
+                        }
+                    }
+                },
+                "feelslike_c": {
+                    "type": "number"
+                },
+                "feelslike_f": {
+                    "type": "number"
+                },
+                "gust_kph": {
+                    "type": "number"
+                },
+                "gust_mph": {
+                    "type": "number"
+                },
+                "humidity": {
+                    "type": "integer"
+                },
+                "is_day": {
+                    "type": "integer"
+                },
+                "last_updated": {
+                    "type": "string"
+                },
+                "last_updated_epoch": {
+                    "type": "integer"
+                },
+                "precip_in": {
+                    "type": "number"
+                },
+                "precip_mm": {
+                    "type": "number"
+                },
+                "pressure_in": {
+                    "type": "number"
+                },
+                "pressure_mb": {
+                    "type": "number"
+                },
+                "temp_c": {
+                    "type": "number"
+                },
+                "temp_f": {
+                    "type": "number"
+                },
+                "uv": {
+                    "type": "number"
+                },
+                "vis_km": {
+                    "type": "number"
+                },
+                "vis_miles": {
+                    "type": "number"
+                },
+                "wind_degree": {
+                    "type": "integer"
+                },
+                "wind_dir": {
+                    "type": "string"
+                },
+                "wind_kph": {
+                    "type": "number"
+                },
+                "wind_mph": {
+                    "type": "number"
+                }
+            }
+        },
+        "weatherData.Day": {
+            "type": "object",
+            "properties": {
+                "avghumidity": {
+                    "type": "number"
+                },
+                "avgtemp_c": {
+                    "type": "number"
+                },
+                "avgtemp_f": {
+                    "type": "number"
+                },
+                "avgvis_km": {
+                    "type": "number"
+                },
+                "avgvis_miles": {
+                    "type": "number"
+                },
+                "condition": {
+                    "$ref": "#/definitions/weatherData.Condition"
+                },
+                "maxtemp_c": {
+                    "type": "number"
+                },
+                "maxtemp_f": {
+                    "type": "number"
+                },
+                "maxwind_kph": {
+                    "type": "number"
+                },
+                "maxwind_mph": {
+                    "type": "number"
+                },
+                "mintemp_c": {
+                    "type": "number"
+                },
+                "mintemp_f": {
+                    "type": "number"
+                },
+                "totalprecip_in": {
+                    "type": "number"
+                },
+                "totalprecip_mm": {
+                    "type": "number"
+                },
+                "uv": {
+                    "type": "number"
+                }
+            }
+        },
+        "weatherData.ForeCastData": {
+            "type": "object",
+            "properties": {
+                "current": {
+                    "$ref": "#/definitions/weatherData.Current"
+                },
+                "forecast": {
+                    "$ref": "#/definitions/weatherData.Forecast"
+                },
+                "location": {
+                    "$ref": "#/definitions/weatherData.Location"
+                }
+            }
+        },
+        "weatherData.Forecast": {
+            "type": "object",
+            "properties": {
+                "forecastday": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/weatherData.Forecastday"
+                    }
+                }
+            }
+        },
+        "weatherData.Forecastday": {
+            "type": "object",
+            "properties": {
+                "astro": {
+                    "$ref": "#/definitions/weatherData.Astro"
+                },
+                "date": {
+                    "type": "string"
+                },
+                "date_epoch": {
+                    "type": "integer"
+                },
+                "day": {
+                    "$ref": "#/definitions/weatherData.Day"
+                },
+                "hour": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/weatherData.Hour"
+                    }
+                }
+            }
+        },
+        "weatherData.FutureData": {
+            "type": "object",
+            "properties": {
+                "forecast": {
+                    "$ref": "#/definitions/weatherData.Forecast"
+                },
+                "location": {
+                    "$ref": "#/definitions/weatherData.Location"
+                }
+            }
+        },
+        "weatherData.Hour": {
+            "type": "object",
+            "properties": {
+                "chance_of_rain": {
+                    "type": "integer"
+                },
+                "chance_of_snow": {
+                    "type": "integer"
+                },
+                "cloud": {
+                    "type": "integer"
+                },
+                "condition": {
+                    "$ref": "#/definitions/weatherData.Condition"
+                },
+                "dewpoint_c": {
+                    "type": "number"
+                },
+                "dewpoint_f": {
+                    "type": "number"
+                },
+                "feelslike_c": {
+                    "type": "number"
+                },
+                "feelslike_f": {
+                    "type": "number"
+                },
+                "gust_kph": {
+                    "type": "number"
+                },
+                "gust_mph": {
+                    "type": "number"
+                },
+                "heatindex_c": {
+                    "type": "number"
+                },
+                "heatindex_f": {
+                    "type": "number"
+                },
+                "humidity": {
+                    "type": "integer"
+                },
+                "is_day": {
+                    "type": "integer"
+                },
+                "precip_in": {
+                    "type": "number"
+                },
+                "precip_mm": {
+                    "type": "number"
+                },
+                "pressure_in": {
+                    "type": "number"
+                },
+                "pressure_mb": {
+                    "type": "number"
+                },
+                "temp_c": {
+                    "type": "number"
+                },
+                "temp_f": {
+                    "type": "number"
+                },
+                "time": {
+                    "type": "string"
+                },
+                "time_epoch": {
+                    "type": "integer"
+                },
+                "vis_km": {
+                    "type": "number"
+                },
+                "vis_miles": {
+                    "type": "number"
+                },
+                "will_it_rain": {
+                    "type": "integer"
+                },
+                "will_it_snow": {
+                    "type": "integer"
+                },
+                "wind_degree": {
+                    "type": "integer"
+                },
+                "wind_dir": {
+                    "type": "string"
+                },
+                "wind_kph": {
+                    "type": "number"
+                },
+                "wind_mph": {
+                    "type": "number"
+                },
+                "windchill_c": {
+                    "type": "number"
+                },
+                "windchill_f": {
+                    "type": "number"
+                }
+            }
+        },
+        "weatherData.Location": {
+            "type": "object",
+            "properties": {
+                "country": {
+                    "type": "string"
+                },
+                "lat": {
+                    "type": "number"
+                },
+                "localtime": {
+                    "type": "string"
+                },
+                "localtime_epoch": {
+                    "type": "integer"
+                },
+                "lon": {
+                    "type": "number"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "region": {
+                    "type": "string"
+                },
+                "tz_id": {
+                    "type": "string"
+                }
+            }
+        },
+        "weatherData.RealTimeData": {
+            "type": "object",
+            "properties": {
+                "current": {
+                    "type": "object",
+                    "properties": {
+                        "cloud": {
+                            "type": "integer"
+                        },
+                        "condition": {
+                            "type": "object",
+                            "properties": {
+                                "code": {
+                                    "type": "integer"
+                                },
+                                "icon": {
+                                    "type": "string"
+                                },
+                                "text": {
+                                    "type": "string"
+                                }
+                            }
+                        },
+                        "feelslike_c": {
+                            "type": "number"
+                        },
+                        "feelslike_f": {
+                            "type": "number"
+                        },
+                        "gust_kph": {
+                            "type": "number"
+                        },
+                        "gust_mph": {
+                            "type": "number"
+                        },
+                        "humidity": {
+                            "type": "integer"
+                        },
+                        "is_day": {
+                            "type": "integer"
+                        },
+                        "last_updated": {
+                            "type": "string"
+                        },
+                        "last_updated_epoch": {
+                            "type": "integer"
+                        },
+                        "precip_in": {
+                            "type": "number"
+                        },
+                        "precip_mm": {
+                            "type": "number"
+                        },
+                        "pressure_in": {
+                            "type": "number"
+                        },
+                        "pressure_mb": {
+                            "type": "number"
+                        },
+                        "temp_c": {
+                            "type": "number"
+                        },
+                        "temp_f": {
+                            "type": "number"
+                        },
+                        "uv": {
+                            "type": "number"
+                        },
+                        "vis_km": {
+                            "type": "number"
+                        },
+                        "vis_miles": {
+                            "type": "number"
+                        },
+                        "wind_degree": {
+                            "type": "integer"
+                        },
+                        "wind_dir": {
+                            "type": "string"
+                        },
+                        "wind_kph": {
+                            "type": "number"
+                        },
+                        "wind_mph": {
+                            "type": "number"
+                        }
+                    }
+                },
+                "location": {
+                    "type": "object",
+                    "properties": {
+                        "country": {
+                            "type": "string"
+                        },
+                        "lat": {
+                            "type": "number"
+                        },
+                        "localtime": {
+                            "type": "string"
+                        },
+                        "localtime_epoch": {
+                            "type": "integer"
+                        },
+                        "lon": {
+                            "type": "number"
+                        },
+                        "name": {
+                            "type": "string"
+                        },
+                        "region": {
+                            "type": "string"
+                        },
+                        "tz_id": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "weatherData.TimeZoneData": {
+            "type": "object",
+            "properties": {
+                "location": {
+                    "$ref": "#/definitions/weatherData.Location"
+                }
+            }
+        }
+    }
+}

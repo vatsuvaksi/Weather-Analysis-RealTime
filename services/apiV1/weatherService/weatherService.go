@@ -19,11 +19,11 @@ func NewWeatherService() *WeatherService {
 // @Accept json
 // @Produce json
 // @Param q query string true "Location query"
-// @Success 200 {object} RealTimeData "Successful response"
-// @Failure 400 {object} ErrorResponse "Bad request"
-// @Failure 401 {object} ErrorResponse "Unauthorized"
-// @Failure 404 {object} ErrorResponse "Not found"
-// @Failure 500 {object} ErrorResponse "Internal server error"
+// @Success 200 {object} weatherData.RealTimeData "Successful response"
+// @Failure 400  "Bad request"
+// @Failure 401  "Unauthorized"
+// @Failure 404  "Not found"
+// @Failure 500  "Internal server error"
 // @Router /weather/real-time [get]
 func (ws *WeatherService) GetRealTimeData(q string) (*weatherData.RealTimeData, error) {
 	// Calling Internal Services to Get RealTime Data
@@ -41,11 +41,11 @@ func (ws *WeatherService) GetRealTimeData(q string) (*weatherData.RealTimeData, 
 // @Produce json
 // @Param q query string true "Location query"
 // @Param days query string true "Number of days for the forecast"
-// @Success 200 {object} ForeCastData "Successful response"
-// @Failure 400 {object} ErrorResponse "Bad request"
-// @Failure 401 {object} ErrorResponse "Unauthorized"
-// @Failure 404 {object} ErrorResponse "Not found"
-// @Failure 500 {object} ErrorResponse "Internal server error"
+// @Success 200 {object} weatherData.ForeCastData "Successful response"
+// @Failure 400  "Bad request"
+// @Failure 401  "Unauthorized"
+// @Failure 404  "Not found"
+// @Failure 500  "Internal server error"
 // @Router /weather/forecast [get]
 func (ws *WeatherService) GetForecast(q, days string) (*weatherData.ForeCastData, error) {
 	// Calling Internal Services to Get Forecast Data
@@ -63,11 +63,11 @@ func (ws *WeatherService) GetForecast(q, days string) (*weatherData.ForeCastData
 // @Produce json
 // @Param q query string true "Location query"
 // @Param dt query string true "Date for the forecast (YYYY-MM-DD format)"
-// @Success 200 {object} FutureData "Successful response"
-// @Failure 400 {object} ErrorResponse "Bad request"
-// @Failure 401 {object} ErrorResponse "Unauthorized"
-// @Failure 404 {object} ErrorResponse "Not found"
-// @Failure 500 {object} ErrorResponse "Internal server error"
+// @Success 200 {object} weatherData.FutureData "Successful response"
+// @Failure 400  "Bad request"
+// @Failure 401  "Unauthorized"
+// @Failure 404  "Not found"
+// @Failure 500  "Internal server error"
 // @Router /weather/future [get]
 func (ws *WeatherService) GetFuture(q, dt string) (*weatherData.FutureData, error) {
 	// Calling Internal Services to Get Future Data
@@ -84,11 +84,11 @@ func (ws *WeatherService) GetFuture(q, dt string) (*weatherData.FutureData, erro
 // @Accept json
 // @Produce json
 // @Param q query string true "Location query"
-// @Success 200 {object} TimeZoneData "Successful response"
-// @Failure 400 {object} ErrorResponse "Bad request"
-// @Failure 401 {object} ErrorResponse "Unauthorized"
-// @Failure 404 {object} ErrorResponse "Not found"
-// @Failure 500 {object} ErrorResponse "Internal server error"
+// @Success 200 {object} weatherData.TimeZoneData "Successful response"
+// @Failure 400  "Bad request"
+// @Failure 401  "Unauthorized"
+// @Failure 404  "Not found"
+// @Failure 500  "Internal server error"
 // @Router /weather/time-zone [get]
 func (ws *WeatherService) GetTimeZone(q string) (*weatherData.TimeZoneData, error) {
 	// Calling Internal Services to GetTimeZone Data
