@@ -2,7 +2,9 @@
 package weatherclient
 
 import (
+	"errors"
 	"fmt"
+	"real-time-weather-app/utils/loggers"
 	"sync"
 
 	"github.com/valyala/fasthttp"
@@ -21,7 +23,7 @@ var baseURL = "https://api.weatherapi.com/v1/"
 func GetWeatherClientResource() (*WeatherClientResource, error) {
 	// Creating a new WeatherClientResource
 	once.Do(func() {
-		fmt.Println("Creating Weather Resource Singleton Object...")
+		loggers.Logger.Info("Creating Weather Resource Singleton Object")
 		singletonWeatherClient = &WeatherClientResource{
 			Client: &fasthttp.Client{
 				MaxConnsPerHost:        10,
@@ -35,7 +37,7 @@ func GetWeatherClientResource() (*WeatherClientResource, error) {
 
 func (wCR *WeatherClientResource) GetDataFromClient(url string, queryParams map[string]string) ([]byte, error) {
 	// Create a new fasthttp request object
-	fmt.Println("GetDataFromClient Initiated for --> ", url)
+	loggers.Logger.Info("GetDataFromClient Initiated for --> ", url)
 	req := fasthttp.AcquireRequest()
 	req.Header.SetMethod("GET")
 	defer fasthttp.ReleaseRequest(req)
@@ -63,12 +65,14 @@ func (wCR *WeatherClientResource) GetDataFromClient(url string, queryParams map[
 
 	// Check the response status code
 	if resp.StatusCode() != fasthttp.StatusOK {
-		return nil, fmt.Errorf("Received non-OK status code: %d", resp.StatusCode())
+		errMsg := fmt.Sprintf("Received non-OK status code: %d", resp.StatusCode())
+		loggers.Logger.Errorf(errMsg)
+		return nil, errors.New(errMsg) // Log the error message once and return it as an error
 	}
 
 	// Get the response body as bytes
 	// responseBody := resp.Body()
-	fmt.Println("GetDataFromClient Completed and response returned for --> ")
+	loggers.Logger.Info("GetDataFromClient Completed and response returned for --> ")
 
 	return resp.Body(), nil
 }

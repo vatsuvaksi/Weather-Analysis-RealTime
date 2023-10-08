@@ -2,10 +2,12 @@ package apis
 
 import (
 	"encoding/json"
-	"fmt"
 	"os"
 	weatherdata "real-time-weather-app/models/network/weatherData"
+	"real-time-weather-app/utils/loggers"
 	"real-time-weather-app/weatherclient"
+
+	"github.com/sirupsen/logrus"
 )
 
 /*
@@ -16,10 +18,13 @@ and days in string format
 func GetForecast(q, days string) (*weatherdata.ForeCastData, error) {
 	var apiKey = os.Getenv("API_KEY")
 	var ForecastData *weatherdata.ForeCastData
-	fmt.Println("Initiated API call for GetForecast")
+	loggers.Logger.Info("Initiated API call for GetForecast")
 	weatherClientResource, err := weatherclient.GetWeatherClientResource()
 	if err != nil {
-		fmt.Println(err)
+		loggers.Logger.WithField("Key", logrus.Fields{
+			"Status":  500,
+			"isFatal": true,
+		}).Warn("Error Loading Weather Client Resource")
 		return ForecastData, err
 	} else {
 		var url = "forecast.json"
@@ -30,12 +35,20 @@ func GetForecast(q, days string) (*weatherdata.ForeCastData, error) {
 		})
 
 		if err != nil {
+			loggers.Logger.WithField("Key", logrus.Fields{
+				"Status":  500,
+				"isFatal": false,
+			}).Warn("Error Fetching Info from client")
 			return ForecastData, err
 		} else {
 			if err := json.Unmarshal(response, &ForecastData); err != nil {
+				loggers.Logger.WithField("Key", logrus.Fields{
+					"Status":  500,
+					"isFatal": false,
+				}).Warn("Error Unmarshalling ForecastData ")
 				return ForecastData, err
 			}
-			fmt.Println("GetForecast Data Generated response")
+			loggers.Logger.Info("GetForecast Data Generated response")
 			return ForecastData, nil
 		}
 	}

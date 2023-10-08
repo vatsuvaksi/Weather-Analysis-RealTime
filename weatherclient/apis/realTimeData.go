@@ -2,10 +2,12 @@ package apis
 
 import (
 	"encoding/json"
-	"fmt"
 	"os"
 	weatherdata "real-time-weather-app/models/network/weatherData"
+	"real-time-weather-app/utils/loggers"
 	"real-time-weather-app/weatherclient"
+
+	"github.com/sirupsen/logrus"
 )
 
 /*
@@ -15,10 +17,10 @@ lattitude,longitude value in the format "lat,lang" or it can be a single zip cod
 func GetRealTimeData(q string) (*weatherdata.RealTimeData, error) {
 	var apiKey = os.Getenv("API_KEY")
 	var realTimeData *weatherdata.RealTimeData
-	fmt.Println("Initiated API call for GetRealTimeData")
+	loggers.Logger.Info("Initiated API call for GetRealTimeData")
 	weatherClientResource, err := weatherclient.GetWeatherClientResource()
 	if err != nil {
-		fmt.Println(err)
+		loggers.Logger.Info(err)
 		return realTimeData, err
 	} else {
 		var url = "current.json"
@@ -28,14 +30,20 @@ func GetRealTimeData(q string) (*weatherdata.RealTimeData, error) {
 		})
 
 		if err != nil {
-			fmt.Println(err)
+			loggers.Logger.WithField("Key", logrus.Fields{
+				"Status":  500,
+				"isFatal": false,
+			}).Warn("Error Fetching Info from client for realTimeData API ")
 			return realTimeData, err
 		} else {
 			if err := json.Unmarshal(response, &realTimeData); err != nil {
-				fmt.Println(err)
+				loggers.Logger.WithField("Key", logrus.Fields{
+					"Status":  500,
+					"isFatal": false,
+				}).Warn("Error Unmarshalling RealTime Data ")
 				return realTimeData, err
 			} else {
-				fmt.Println("Get Real Time Data Generated response")
+				loggers.Logger.Info("Get Real Time Data Generated response")
 				return realTimeData, nil
 			}
 		}
