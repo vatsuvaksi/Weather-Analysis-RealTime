@@ -24,7 +24,7 @@ func NewWeatherService() *WeatherService {
 // @Failure 401  "Unauthorized"
 // @Failure 404  "Not found"
 // @Failure 500  "Internal server error"
-// @Router /weather/real-time [get]
+// @Router /real-time [get]
 func (ws *WeatherService) GetRealTimeData(q string) (*weatherData.RealTimeData, error) {
 	// Calling Internal Services to Get RealTime Data
 	response, err := apis.GetRealTimeData(q)
@@ -46,7 +46,7 @@ func (ws *WeatherService) GetRealTimeData(q string) (*weatherData.RealTimeData, 
 // @Failure 401  "Unauthorized"
 // @Failure 404  "Not found"
 // @Failure 500  "Internal server error"
-// @Router /weather/forecast [get]
+// @Router /forecast [get]
 func (ws *WeatherService) GetForecast(q, days string) (*weatherData.ForeCastData, error) {
 	// Calling Internal Services to Get Forecast Data
 	response, err := apis.GetForecast(q, days)
@@ -68,7 +68,7 @@ func (ws *WeatherService) GetForecast(q, days string) (*weatherData.ForeCastData
 // @Failure 401  "Unauthorized"
 // @Failure 404  "Not found"
 // @Failure 500  "Internal server error"
-// @Router /weather/future [get]
+// @Router /future [get]
 func (ws *WeatherService) GetFuture(q, dt string) (*weatherData.FutureData, error) {
 	// Calling Internal Services to Get Future Data
 	response, err := apis.GetFuture(q, dt)
@@ -89,7 +89,7 @@ func (ws *WeatherService) GetFuture(q, dt string) (*weatherData.FutureData, erro
 // @Failure 401  "Unauthorized"
 // @Failure 404  "Not found"
 // @Failure 500  "Internal server error"
-// @Router /weather/time-zone [get]
+// @Router /time-zone [get]
 func (ws *WeatherService) GetTimeZone(q string) (*weatherData.TimeZoneData, error) {
 	// Calling Internal Services to GetTimeZone Data
 	response, err := apis.GetTimeZone(q)

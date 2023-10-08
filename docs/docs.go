@@ -15,7 +15,7 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/weather/forecast": {
+        "/forecast": {
             "get": {
                 "description": "Retrieve weather forecast data based on the provided query and number of days.",
                 "consumes": [
@@ -66,7 +66,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/weather/future": {
+        "/future": {
             "get": {
                 "description": "Retrieve future weather data based on the provided query and date.",
                 "consumes": [
@@ -117,7 +117,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/weather/real-time": {
+        "/real-time": {
             "get": {
                 "description": "Retrieve real-time weather data based on the provided query.",
                 "consumes": [
@@ -161,7 +161,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/weather/time-zone": {
+        "/time-zone": {
             "get": {
                 "description": "Retrieve time zone data based on the provided location query.",
                 "consumes": [
@@ -700,15 +700,15 @@ const docTemplate = `{
 
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
-	Version:          "",
-	Host:             "",
-	BasePath:         "",
+	Version:          "0.1",
+	Host:             "http://localhost:7001",
+	BasePath:         "/",
 	Schemes:          []string{},
-	Title:            "",
+	Title:            "Real Time Weather Ananlysis",
 	Description:      "",
 	InfoInstanceName: "swagger",
 	SwaggerTemplate:  docTemplate,
-
+	
 }
 
 func init() {

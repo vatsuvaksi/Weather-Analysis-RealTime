@@ -322,7 +322,7 @@ definitions:
 info:
   contact: {}
 paths:
-  /weather/forecast:
+  /forecast:
     get:
       consumes:
       - application/json
@@ -357,7 +357,7 @@ paths:
       summary: Get weather forecast data
       tags:
       - Weather
-  /weather/future:
+  /future:
     get:
       consumes:
       - application/json
@@ -391,7 +391,7 @@ paths:
       summary: Get future weather data
       tags:
       - Weather
-  /weather/real-time:
+  /real-time:
     get:
       consumes:
       - application/json
@@ -420,7 +420,7 @@ paths:
       summary: Get real-time weather data
       tags:
       - Weather
-  /weather/time-zone:
+  /time-zone:
     get:
       consumes:
       - application/json
