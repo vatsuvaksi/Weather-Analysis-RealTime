@@ -25,10 +25,13 @@ func MuxRouter() (*router.Router, error) {
 	//Initializing Routers
 	r := router.New()
 	r.GET("/", indexController.WelcomeHome)
-	r.GET("/realTimeData", weathercontroller.GetRealTime)
-	r.GET("/forecast", weathercontroller.GetForecast)
-	r.GET("/future", weathercontroller.GetFuture)
-	r.GET("/timeZone", weathercontroller.GetTimeZone)
+
+	// Versioning APIs
+	// The following router works for v1
+	r.GET("/v1/realTimeData", weathercontroller.GetRealTime)
+	r.GET("/v1/forecast", weathercontroller.GetForecast)
+	r.GET("/v1/future", weathercontroller.GetFuture)
+	r.GET("/v1/timeZone", weathercontroller.GetTimeZone)
 
 	// Serve Swagger UI at the /swagger URL
 	r.GET("/swagger/{*filepath}", fasthttpadaptor.NewFastHTTPHandlerFunc(httpSwagger.WrapHandler))
