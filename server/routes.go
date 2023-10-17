@@ -5,6 +5,7 @@ import (
 	"os"
 	indexcontroller "real-time-weather-app/controllers/apiV1/indexController"
 	weathercontroller "real-time-weather-app/controllers/apiV1/weatherController"
+	"real-time-weather-app/middleware"
 	"real-time-weather-app/utils/loggers"
 
 	// "real-time-weather-app/utils/loggers"
@@ -28,10 +29,10 @@ func MuxRouter() (*router.Router, error) {
 
 	// Versioning APIs
 	// The following router works for v1
-	r.GET("/v1/realTimeData", weathercontroller.GetRealTime)
-	r.GET("/v1/forecast", weathercontroller.GetForecast)
-	r.GET("/v1/future", weathercontroller.GetFuture)
-	r.GET("/v1/timeZone", weathercontroller.GetTimeZone)
+	r.GET("/v1/realTimeData", middleware.RateLimitMiddleware(weathercontroller.GetRealTime))
+	r.GET("/v1/forecast", middleware.RateLimitMiddleware(weathercontroller.GetForecast))
+	r.GET("/v1/future", middleware.RateLimitMiddleware(weathercontroller.GetFuture))
+	r.GET("/v1/timeZone", middleware.RateLimitMiddleware(weathercontroller.GetTimeZone))
 
 	// Serve Swagger UI at the /swagger URL
 	r.GET("/swagger/{*filepath}", fasthttpadaptor.NewFastHTTPHandlerFunc(httpSwagger.WrapHandler))
