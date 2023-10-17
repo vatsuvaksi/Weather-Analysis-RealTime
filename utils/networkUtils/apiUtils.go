@@ -19,6 +19,19 @@ func RenderSuccessResponse(ctx *fasthttp.RequestCtx, responseBody interface{}) {
 	ctx.Response.SetBody(jsonResponse)
 }
 
+func RenderInternalFailiureResponseForLimitExceed(ctx *fasthttp.RequestCtx, err error) {
+	ctx.Response.Header.Set(fasthttp.HeaderContentType, "application/json; charset=utf-8")
+	ctx.SetStatusCode(fasthttp.StatusTooManyRequests)
+	errorStruct := &network.FailiureResponse{
+		ErrorMessage: err.Error(),
+		Status:       "Rate Limit Exceeded",
+	}
+	jsonResponse, err := json.Marshal(errorStruct)
+	if err != nil {
+		ctx.Error(err.Error(), fasthttp.StatusInternalServerError)
+	}
+	ctx.Response.SetBody(jsonResponse)
+}
 func RenderInternalFailiureResponse(ctx *fasthttp.RequestCtx, err error) {
 	ctx.Response.Header.Set(fasthttp.HeaderContentType, "application/json; charset=utf-8")
 	ctx.SetStatusCode(fasthttp.StatusInternalServerError)
