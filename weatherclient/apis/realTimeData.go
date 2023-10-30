@@ -10,7 +10,7 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
-type ConcurrentFetchData struct {
+type ConcurrentFetchRealTimeData struct {
 	Data *weatherdata.RealTimeData
 	Err  error
 }
@@ -22,7 +22,7 @@ lattitude,longitude value in the format "lat,lang" or it can be a single zip cod
 func GetRealTimeData(q string) (*weatherdata.RealTimeData, error) {
 
 	// Create a channel for results
-	resultCh := make(chan ConcurrentFetchData)
+	resultCh := make(chan ConcurrentFetchRealTimeData)
 
 	// Launch a goroutine to fetch data
 	go func() {
@@ -32,7 +32,7 @@ func GetRealTimeData(q string) (*weatherdata.RealTimeData, error) {
 		weatherClientResource, err := weatherclient.GetWeatherClientResource()
 		if err != nil {
 			loggers.Logger.Info(err)
-			resultCh <- ConcurrentFetchData{Data: nil, Err: err}
+			resultCh <- ConcurrentFetchRealTimeData{Data: nil, Err: err}
 			return
 		}
 		var url = "current.json"
@@ -46,7 +46,7 @@ func GetRealTimeData(q string) (*weatherdata.RealTimeData, error) {
 				"Status":  500,
 				"isFatal": false,
 			}).Warn("Error Fetching Info from client for realTimeData API ")
-			resultCh <- ConcurrentFetchData{Data: nil, Err: err}
+			resultCh <- ConcurrentFetchRealTimeData{Data: nil, Err: err}
 			return
 		}
 		if err := json.Unmarshal(response, &realTimeData); err != nil {
@@ -54,11 +54,11 @@ func GetRealTimeData(q string) (*weatherdata.RealTimeData, error) {
 				"Status":  500,
 				"isFatal": false,
 			}).Warn("Error Unmarshalling RealTime Data ")
-			resultCh <- ConcurrentFetchData{Data: nil, Err: err}
+			resultCh <- ConcurrentFetchRealTimeData{Data: nil, Err: err}
 			return
 		}
 		loggers.Logger.Info("Get Real Time Data Generated response")
-		resultCh <- ConcurrentFetchData{Data: realTimeData, Err: nil}
+		resultCh <- ConcurrentFetchRealTimeData{Data: realTimeData, Err: nil}
 	}()
 	// Wait for the result from the goroutine
 	result := <-resultCh

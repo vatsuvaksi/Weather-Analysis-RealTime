@@ -41,7 +41,7 @@ type Astro struct {
 	Moonrise         string `json:"moonrise"`
 	Moonset          string `json:"moonset"`
 	MoonPhase        string `json:"moon_phase"`
-	MoonIllumination string `json:"moon_illumination"`
+	MoonIllumination int64  `json:"moon_illumination"`
 }
 
 type Hour struct {

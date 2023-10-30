@@ -10,23 +10,31 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
+type ConcurrentFetchForecastData struct {
+	Data *weatherdata.ForeCastData
+	Err  error
+}
+
 /*
 Function Calls the weather API to get Forecast using the paramater q  which can either be
 lattitude,longitude value in the format "lat,lang" or it can be a single zip code "zipCode"
 and days in string format
 */
 func GetForecast(q, days string) (*weatherdata.ForeCastData, error) {
-	var apiKey = os.Getenv("API_KEY")
-	var ForecastData *weatherdata.ForeCastData
-	loggers.Logger.Info("Initiated API call for GetForecast")
-	weatherClientResource, err := weatherclient.GetWeatherClientResource()
-	if err != nil {
-		loggers.Logger.WithField("Key", logrus.Fields{
-			"Status":  500,
-			"isFatal": true,
-		}).Warn("Error Loading Weather Client Resource")
-		return ForecastData, err
-	} else {
+
+	var resultCh = make(chan ConcurrentFetchForecastData)
+	// Go Routine for execution
+	// Launch a goroutine to fetch data
+	go func() {
+		var apiKey = os.Getenv("API_KEY")
+		var forecastData *weatherdata.ForeCastData
+		loggers.Logger.Info("Initiated API call for Get ForeCast Data")
+		weatherClientResource, err := weatherclient.GetWeatherClientResource()
+		if err != nil {
+			loggers.Logger.Info(err)
+			resultCh <- ConcurrentFetchForecastData{Data: nil, Err: err}
+			return
+		}
 		var url = "forecast.json"
 		response, err := weatherClientResource.GetDataFromClient(url, map[string]string{
 			"q":    q,
@@ -38,18 +46,22 @@ func GetForecast(q, days string) (*weatherdata.ForeCastData, error) {
 			loggers.Logger.WithField("Key", logrus.Fields{
 				"Status":  500,
 				"isFatal": false,
-			}).Warn("Error Fetching Info from client")
-			return ForecastData, err
-		} else {
-			if err := json.Unmarshal(response, &ForecastData); err != nil {
-				loggers.Logger.WithField("Key", logrus.Fields{
-					"Status":  500,
-					"isFatal": false,
-				}).Warn("Error Unmarshalling ForecastData ")
-				return ForecastData, err
-			}
-			loggers.Logger.Info("GetForecast Data Generated response")
-			return ForecastData, nil
+			}).Warn("Error Fetching Info from client for forecast API ")
+			resultCh <- ConcurrentFetchForecastData{Data: nil, Err: err}
+			return
 		}
-	}
+		if err := json.Unmarshal(response, &forecastData); err != nil {
+			loggers.Logger.WithField("Key", logrus.Fields{
+				"Status":  500,
+				"isFatal": false,
+			}).Warn("Error Unmarshalling forecastData Data ")
+			resultCh <- ConcurrentFetchForecastData{Data: nil, Err: err}
+			return
+		}
+		loggers.Logger.Info("GetForecast Data Generated response")
+		resultCh <- ConcurrentFetchForecastData{Data: forecastData, Err: nil}
+	}()
+	// Wait for the result from the goroutine
+	result := <-resultCh
+	return result.Data, result.Err
 }
